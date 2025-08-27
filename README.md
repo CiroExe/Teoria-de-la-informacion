@@ -1,1 +1,1 @@
-# Teor-a-de-la-informacion
+# Teoria-de-la-informacion
