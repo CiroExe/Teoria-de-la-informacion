@@ -134,6 +134,7 @@ def NoSingular(lista):
                 return False
     return True
         
+#Inciso B
                         
 def Instantaneo(lista):
     n=len(lista)
@@ -141,9 +142,10 @@ def Instantaneo(lista):
         x = lista[i]
         for j in range(n):
             if(i != j and lista[j].startswith(x)):
-                return False #Instantaneo, pues existe al menos una palabra codigo que tiene como prefijo a x
-    return  #Devuelve falso por defecto
+                return False #No Instantaneo, pues existe al menos una palabra codigo que tiene como prefijo a x
+    return True#Devuelve true por defecto
 
+#Inciso C
 
 def UD(lista):
     vec_act = lista.copy()   # códigos actuales que se procesan
