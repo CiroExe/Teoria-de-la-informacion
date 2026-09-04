@@ -1,23 +1,20 @@
 import math
 
-distribuciones = [0.25, 0.40, 0.50, 0.75]
-lista_informacion = []
+#Inciso A
 
-def cantInfo(p, r):
-    if p <= 0 or p > 1:
-        return 0
-    else:
-        return math.log(1/p, r)
-    
-def entropia(distribuciones):
-    e = 0
-    for d in distribuciones:
-        e += d * cantInfo(d, 2)
-    return e
+def generaLista(lista_probs):
+    return [math.log(1/prob, 2) for prob in lista_probs]
 
-lista_informacion = [cantInfo(d, 2) for d in distribuciones]
+lista_probs = [0.5, 0.25, 0.25]
+lista_log = generaLista(lista_probs)
+print(lista_log)
 
-print(lista_informacion)
-print("Entropia de la fuente: ", entropia(distribuciones))
+#[3.3219280948873626, 2.321928094887362, 1.7369655941662063, 1.3219280948873624]
+#Se recibieron los resultados esperados ya que a mayor probabilidad menor cantidad de informacion sera aportada por el simbolo
 
+#Inciso B
+def calculaEntropia(lista_probs):
+    return sum(prob * math.log(1/prob, 2) for prob in lista_probs)
 
+H = calculaEntropia(lista_probs)
+print(H)
