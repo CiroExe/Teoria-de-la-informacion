@@ -1,53 +1,49 @@
 import math
 
-#Inciso A
+
 def vector_estacionario(P, tol=1e-8, max_iter=1000):
     n = len(P)
-    v = [1/n] * n
+    v = [1 / n] * n
+
     for k in range(max_iter):
         nuevo_v = []
         for i in range(n):
-            suma = 0
-            for j in range(n):
-                suma += v[j] * P[j][i]
+            # M * v: Fila i de la matriz por el vector v
+            suma = sum(P[i][j] * v[j] for j in range(n))
             nuevo_v.append(suma)
-        #Verifico si el nuevo vector estacionario esta lo suficientemente cerca del anterior
-        
-        aux = 0
-        for j in range(n):
-            aux += abs(nuevo_v[i] - v[i])
-            
-        if (aux <= tol):
+
+        aux = sum(abs(nuevo_v[j] - v[j]) for j in range(n))
+
+        if aux <= tol:
             return nuevo_v
-        
+
         v = nuevo_v
     return v
 
-P = [
-    [0.6, 0.3, 0.1],  
-    [0.2, 0.5, 0.3],  
-    [0.1, 0.2, 0.7]   
-]
 
-v_estacionario = vector_estacionario(P)
-print("Vector estacionario:", v_estacionario)
+def calcular_entropia_fuente(vector_estacionario, mat):
+    """Calcula la entropía de orden 1 ponderada por v* (Columna = Origen)."""
+    n = len(mat)
+    h = 0.0
 
-#Inciso b
-
-def calculaEntropia(vec_estacionario, mat):
-    n = len(vec_estacionario)
-    H = 0  # Entropía total
-
-    for i in range(n):
-        entropia_condicional = 0
-        for j in range(n):
+    for j in range(n):  # j = Estado Origen (Columna j)
+        h_estado = 0.0
+        for i in range(n):  # i = Estado Destino (Fila i)
             p_ij = mat[i][j]
             if p_ij > 0:
-                entropia_condicional += p_ij * math.log2(p_ij)
-        H += vec_estacionario[i] * entropia_condicional
+                h_estado -= p_ij * math.log2(p_ij)
 
-    return -H
+        h += vector_estacionario[j] * h_estado
 
-H = calculaEntropia(v_estacionario, P)
+    return h
 
-print("Entropía de la fuente:", H)
+
+def calcular_entropia_memoria_nula(mensaje, alfabeto):
+    """Calcula H0 a partir de las frecuencias individuales del mensaje correspondiente."""
+    total = len(mensaje)
+    h = 0.0
+    for s in alfabeto:
+        p = mensaje.count(s) / total
+        if p > 0:
+            h -= p * math.log2(p)
+    return h
